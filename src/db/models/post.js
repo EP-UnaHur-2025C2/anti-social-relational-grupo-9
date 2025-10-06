@@ -14,11 +14,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Post.init({
-    descripcion: DataTypes.STRING,
-    creado: DataTypes.DATEONLY
+    descripcion: {type:DataTypes.STRING, allowNull:false},
+    creado: {type:DataTypes.DATEONLY, allowNull:false}
   }, {
     sequelize,
     modelName: 'Post',
+    timestamps:false,
   });
   return Post;
 };

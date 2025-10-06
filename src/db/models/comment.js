@@ -1,3 +1,5 @@
+const comment_visibility = parseInt(process.env.MAX_COMMENT_VISIBILITY_MONTH, 10) || 6;
+
 'use strict';
 const {
   Model
@@ -14,11 +16,16 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Comment.init({
-    contenido: DataTypes.STRING,
-    creado: DataTypes.DATEONLY
+    contenido: {type:DataTypes.STRING, allowNull:false},
+    creado: {type:DataTypes.DATEONLY, allowNull:false},
+    visible: {type:new DataTypes.VIRTUAL(DataTypes.BOOLEAN,['creado']),
+    get:function() {
+      return ((new Date() - new Date(this.get('creado')))/(1000*60*60*24*30)) < comment_visibility;
+    }}
   }, {
     sequelize,
     modelName: 'Comment',
+    timestamps:false,
   });
   return Comment;
 };

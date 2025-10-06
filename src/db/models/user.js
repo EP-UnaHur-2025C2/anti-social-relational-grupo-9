@@ -14,12 +14,13 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   User.init({
-    nickName: DataTypes.STRING,
-    fechaNacimiento: DataTypes.DATEONLY,
-    email: DataTypes.STRING
+    nickName: {type:DataTypes.STRING, unique:true, allowNull:false},
+    fechaNacimiento: {type:DataTypes.DATEONLY, allowNull:false},
+    email: {type:DataTypes.STRING, allowNull:false}
   }, {
     sequelize,
     modelName: 'User',
+    timestamps:false,
   });
   return User;
 };
