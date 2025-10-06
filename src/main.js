@@ -1,6 +1,7 @@
 const express = require('express');
 const db = require('./db/models');
 const routes = require('./routes');
+require('dotenv').config();
 const PORT = parseInt(process.env.PORT, 10) || 3010;
 
 const app = express();
