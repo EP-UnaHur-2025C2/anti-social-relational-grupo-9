@@ -6,6 +6,8 @@ router.get('/', imageController.getImages);
 
 router.get('/:id', imageController.getImageById);
 
+router.get('/:id/tags', imageController.getImageTags);
+
 router.post('/', imageController.createImage);
 
 router.put('/:id', imageController.updateImage);

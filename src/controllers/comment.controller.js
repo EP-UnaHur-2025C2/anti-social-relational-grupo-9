@@ -1,4 +1,4 @@
-const {Comment} = require('../db/models');
+const {Comment, Post} = require('../db/models');
 
 const getComments = async (req, res) => {
     const comments = await Comment.findAll({});
@@ -9,6 +9,31 @@ const getCommentById = async (req, res) => {
     const id = req.params.id;
     const comment = await Comment.findByPk(id);
     res.status(200).json(comment);
+};
+
+const getVisibleComments = async (req, res) => {
+    const comments = await Comment.findAll({});
+    const visibleComments = comments.filter(c => c.visible);
+    res.status(200).json(visibleComments);
+};
+
+const getVisibleCommentsByPost = async (req, res) => {
+    const id = req.params.id;
+    const comments = await Comment.findAll({where:{postId:id}, include:{model:Post, as:'post'}});
+    const visibleComments = comments.filter(c => c.visible);
+    res.status(200).json(visibleComments);
+};
+
+const getUserComments = async (req, res) => {
+    const id = req.params.id;
+    const comments = await Comment.findAll({where:{userId:id}});
+    res.status(200).json(comments);
+};
+
+const getCommentsOnPostByUser = async (req, res) => {
+    const {postId, userId} = req.params;
+    const comments = await Comment.findAll({where:{postId, userId}});
+    res.status(200).json(comments);
 };
 
 const createComment = async (req, res) => {
@@ -33,6 +58,10 @@ const deleteComment = async (req, res) => {
 module.exports = {
     getComments,
     getCommentById,
+    getVisibleComments,
+    getVisibleCommentsByPost,
+    getCommentsOnPostByUser,
+    getUserComments,
     createComment,
     updateComment,
     deleteComment

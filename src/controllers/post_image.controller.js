@@ -1,4 +1,4 @@
-const {Post_Image} = require('../db/models');
+const {Post_Image, Post, Tag} = require('../db/models');
 
 const getImages = async (req, res) => {
     const images = await Post_Image.findAll({});
@@ -9,6 +9,12 @@ const getImageById = async (req, res) => {
     const id = req.params.id;
     const image = await Post_Image.findByPk(id);
     res.status(200).json(image);
+};
+
+const getImageTags = async (req, res) => {
+    const {id, url, post} = await Post_Image.findOne({where:{id:req.params.id}, include:[{model:Post, as:'post', attributes:['id'], include:[{model:Tag, as:'tags', through:{attributes:[]}}]}]});
+    const imageTags = {id, url, tags:post.tags};
+    res.status(200).json(imageTags);
 };
 
 const createImage = async (req, res) => {
@@ -34,6 +40,7 @@ const deleteImage = async (req, res) => {
 module.exports = {
     getImages,
     getImageById,
+    getImageTags,
     createImage,
     updateImage,
     deleteImage

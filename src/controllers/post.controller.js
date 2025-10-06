@@ -1,13 +1,24 @@
-const {Post} = require('../db/models');
+const {Post, Post_Image, Comment, Tag} = require('../db/models');
 
-const getPosts = async (req, res) => {
+const getPosts = async (req, res) => {//ver si incluir el los posts completo con comments
     const foundposts = await Post.findAll({});
     res.status(200).json(foundposts);
 };
 
-const getPostById = async (req, res) => {
+const getPostById = async (req, res) => {//ver si incluir los posts completos con comments
     const id = req.params.id;
     const foundPost = await Post.findByPk(id);
+    res.status(200).json(foundPost);
+};
+
+const getFullPostsWithComments = async (req, res) => {
+    const foundPosts = await Post.findAll({where:{}, include:[{model:Post_Image, as:'images'}, {model:Tag, as:'tags', through:{attributes:[]}}, {model:Comment, as:'comments'}]});
+    res.status(200).json(foundPosts);
+}
+
+const getFullPostWithComments = async (req, res) => {
+    const id = req.params.id;
+    const foundPost = await Post.findOne({where:{id}, include:[{model:Post_Image, as:'images'}, {model:Tag, as:'tags', through:{attributes:[]}}, {model:Comment, as:'comments'}]});
     res.status(200).json(foundPost);
 };
 
@@ -30,10 +41,49 @@ const deletePost = async (req, res) => {
     res.status(200).json(deletedPost); 
 };
 
+const createAssociateImages = async (req, res) => {
+    const id = req.params.id;
+    const {urlImages} = req.body;
+    let newImages = [];
+    for(let url of urlImages) {
+        newImages.push(await Post_Image.create({url, postId:id}));
+    }
+    res.status(201).json(newImages);
+};
+
+const createAssociateComment = async (req, res) => {
+    const id = req.params.id;
+    const newComment = await Comment.create({...req.body, postId:id});
+    res.status(201).json(newComment);
+};
+
+const createAndOrAssociateTags = async (req, res) => {
+    const id = req.params.id;
+    const {tags} = req.body;
+    const newTags = [];
+    const existingPost = await Post.findOne({where:{id}});
+    for(let tag of tags) {
+        let existingTag = await Tag.findOne({where:{nombre:tag}});
+        if(existingTag) {
+            await existingPost.addTag(existingTag);
+            newTags.push(existingTag);
+        }
+        else {
+            newTags.push(await existingPost.createTag({nombre:tag}));
+        }
+    }
+    res.status(201).json(newTags);
+};
+
 module.exports = {
     getPosts,
     getPostById,
+    getFullPostsWithComments,
+    getFullPostWithComments,
     createPost,
     updatePost,
     deletePost,
+    createAssociateImages,
+    createAssociateComment,
+    createAndOrAssociateTags
 };
