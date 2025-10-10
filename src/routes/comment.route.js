@@ -1,23 +1,56 @@
 const {Router} = require('express');
 const router = Router();
 const {commentController} = require('../controllers');
+const {genericMiddleware, commentMiddleware} = require('../middlewares')
+const {Comment, Post, User} = require('../db/models')
 
 router.get('/', commentController.getComments);
 
-router.get('/recent/post/:id', commentController.getVisibleCommentsByPost);
+router.get('/recent/post/:id',
+    genericMiddleware.idsValidation,
+    genericMiddleware.idExistByModel(Post),
+    commentController.getVisibleCommentsByPost
+);
 
 router.get('/recent', commentController.getVisibleComments);
 
-router.get('/post/:postId/user/:userId', commentController.getCommentsOnPostByUser);
+router.get('/post/:postId/user/:userId',
+    genericMiddleware.idsValidation,
+    commentMiddleware.idsExistByModel(Post, User),
+    commentMiddleware.postCommentedByUser,
+    commentController.getCommentsOnPostByUser
+);
 
-router.get("/user/:id", commentController.getUserComments);
+router.get("/user/:id",
+    genericMiddleware.idsValidation,
+    genericMiddleware.idExistByModel(User),
+    commentController.getUserComments
+);
 
-router.get('/:id',commentController.getCommentById);
+router.get('/:id',
+    genericMiddleware.idsValidation,
+    genericMiddleware.idExistByModel(Comment),    
+    commentController.getCommentById
+);
 
-router.post('/',commentController.createComment);
+router.post('/',
+    genericMiddleware.idValidationBody('postId'),
+    genericMiddleware.idValidationBody('userId'),
+    genericMiddleware.idExistByModelBody(Post, 'postId'),
+    genericMiddleware.idExistByModelBody(User, 'userId'),
+    commentMiddleware.creadoValidation,
+    commentController.createComment
+);
 
-router.put('/:id',commentController.updateComment);
+router.put('/:id',
+    genericMiddleware.idsValidation,
+    genericMiddleware.idExistByModel(Comment),
+    commentController.updateComment
+);
 
-router.delete('/:id',commentController.deleteComment);
+router.delete('/:id',
+    genericMiddleware.idsValidation,
+    genericMiddleware.idExistByModel(Comment),
+    commentController.deleteComment);
 
 module.exports = router;

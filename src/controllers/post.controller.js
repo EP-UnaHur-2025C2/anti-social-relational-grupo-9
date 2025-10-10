@@ -29,7 +29,8 @@ const createPost = async (req, res) => {
 
 const updatePost = async (req, res) => {
     const id = req.params.id;
-    await Post.update({descripcion:req.body.descripcion}, {where:{id}})
+    const {descripcion} = req.body;
+    await Post.update({descripcion}, {where:{id}}) //no toma en cuenta el userId ni la fecha de creado
     const updatedPost = await Post.findByPk(id);
     res.status(200).json(updatedPost);
 };

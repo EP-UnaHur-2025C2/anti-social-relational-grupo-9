@@ -43,7 +43,8 @@ const createComment = async (req, res) => {
 
 const updateComment = async (req, res) => {
     const id = req.params.id;
-    await Comment.update({contenido:req.body.contenido}, {where:{id}})
+    const {contenido} = req.body;
+    await Comment.update({contenido}, {where:{id}})
     const updatedComment = await Comment.findByPk(id);
     res.status(200).json(updatedComment);
 };
