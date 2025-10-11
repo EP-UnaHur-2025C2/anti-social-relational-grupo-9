@@ -2,7 +2,8 @@ const {Router} = require('express');
 const router = Router();
 const {imageController} = require('../controllers');
 const {genericMiddleware, imageMiddleware} = require('../middlewares')
-const {Post_Image, Post} = require('../db/models')
+const {Post_Image, Post} = require('../db/models');
+const {imageSchemas} = require('../schemas')
 
 router.get('/', imageController.getImages);
 
@@ -19,6 +20,7 @@ router.get('/:id/tags',
 );
 
 router.post('/',
+    genericMiddleware.schemaValidator(imageSchemas.imageSchema),
     genericMiddleware.idValidationBody('postId'),
     genericMiddleware.idExistByModelBody(Post, 'postId'),
     imageMiddleware.urlValidation,
@@ -28,6 +30,7 @@ router.post('/',
 router.put('/:id',
     genericMiddleware.idsValidation,
     genericMiddleware.idExistByModel(Post_Image),
+    genericMiddleware.schemaValidator(imageSchemas.updateImageSchema),
     imageMiddleware.urlValidation,
     imageController.updateImage
 );

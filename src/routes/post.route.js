@@ -3,6 +3,7 @@ const router = Router();
 const {postController} = require('../controllers');
 const {postMiddleware, genericMiddleware, imageMiddleware, commentMiddleware} = require('../middlewares')
 const {Post, User} = require('../db/models');
+const {postSchemas, commentSchemas, imageSchemas, tagSchemas} = require('../schemas')
 
 router.get('/', postController.getPosts);
 
@@ -21,6 +22,7 @@ router.get('/:id/comments',
 );
 
 router.post('/',
+    genericMiddleware.schemaValidator(postSchemas.postSchema),
     genericMiddleware.idValidationBody('userId'),
     genericMiddleware.idExistByModelBody(User, 'userId'),
     postMiddleware.creadoValidation,
@@ -30,12 +32,14 @@ router.post('/',
 router.put('/:id',
     genericMiddleware.idsValidation,
     genericMiddleware.idExistByModel(Post),
+    genericMiddleware.schemaValidator(postSchemas.updatePostSchema),
     postController.updatePost
 );
 
 router.post("/:id/create-comment",
     genericMiddleware.idsValidation,
     genericMiddleware.idExistByModel(Post),
+    genericMiddleware.schemaValidator(commentSchemas.postCommentSchema),
     genericMiddleware.idValidationBody('userId'),
     genericMiddleware.idExistByModelBody(User, 'userId'),
     commentMiddleware.creadoValidation,
@@ -46,6 +50,7 @@ router.post("/:id/create-comment",
 router.post("/:id/create-images",
     genericMiddleware.idsValidation,
     genericMiddleware.idExistByModel(Post),
+    genericMiddleware.schemaValidator(postSchemas.createAssociateImagesSchema),
     imageMiddleware.urlsValidation,
     postController.createAssociateImages
 );
@@ -53,6 +58,7 @@ router.post("/:id/create-images",
 router.post("/:id/create-tags",
     genericMiddleware.idsValidation,
     genericMiddleware.idExistByModel(Post),
+    genericMiddleware.schemaValidator(postSchemas.createAndOrAssociateTagsSchema),
     postController.createAndOrAssociateTags
 );
 

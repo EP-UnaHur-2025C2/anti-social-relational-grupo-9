@@ -2,7 +2,8 @@ const {Router} = require('express');
 const router = Router();
 const {commentController} = require('../controllers');
 const {genericMiddleware, commentMiddleware} = require('../middlewares')
-const {Comment, Post, User} = require('../db/models')
+const {Comment, Post, User} = require('../db/models');
+const {commentSchemas} = require('../schemas');
 
 router.get('/', commentController.getComments);
 
@@ -36,6 +37,7 @@ router.get('/:id',
 router.post('/',
     genericMiddleware.idValidationBody('postId'),
     genericMiddleware.idValidationBody('userId'),
+    genericMiddleware.schemaValidator(commentSchemas.commentSchema),
     genericMiddleware.idExistByModelBody(Post, 'postId'),
     genericMiddleware.idExistByModelBody(User, 'userId'),
     commentMiddleware.creadoValidation,
@@ -45,6 +47,7 @@ router.post('/',
 router.put('/:id',
     genericMiddleware.idsValidation,
     genericMiddleware.idExistByModel(Comment),
+    genericMiddleware.schemaValidator(commentSchemas.updateCommentSchema),
     commentController.updateComment
 );
 

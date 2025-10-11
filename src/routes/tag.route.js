@@ -1,8 +1,9 @@
 const {Router} = require('express');
 const router = Router();
 const {tagController} = require('../controllers');
-const {genericMiddleware, tagMiddleware} = require('../middlewares')
-const {Tag, Post} = require('../db/models')
+const {genericMiddleware, tagMiddleware} = require('../middlewares');
+const {Tag, Post} = require('../db/models');
+const {tagSchemas} = require('../schemas');
 
 router.get('/', tagController.getTags);
 
@@ -21,14 +22,17 @@ router.get('/:id',
 router.get('/:id/users',
     genericMiddleware.idsValidation,
     genericMiddleware.idExistByModel(Tag),
-    tagController.getUsersByTag);
+    tagController.getUsersByTag
+);
 
 router.get('/:id/images',
     genericMiddleware.idsValidation,
     genericMiddleware.idExistByModel(Tag),
-    tagController.getImagesByTag);
+    tagController.getImagesByTag
+);
 
 router.post('/',
+    genericMiddleware.schemaValidator(tagSchemas.tagSchema),
     genericMiddleware.idValidationBody('postId'),
     genericMiddleware.idExistByModelBody(Post, 'postId'),
     tagMiddleware.nombreValidation,
@@ -38,6 +42,7 @@ router.post('/',
 router.put('/:id',
     genericMiddleware.idsValidation,
     genericMiddleware.idExistByModel(Tag),
+    genericMiddleware.schemaValidator(tagSchemas.updateTagSchema),
     tagMiddleware.nombreValidation,
     tagController.updateTag
 );

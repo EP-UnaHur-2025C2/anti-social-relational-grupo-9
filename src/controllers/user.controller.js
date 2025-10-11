@@ -44,6 +44,12 @@ const deleteUser = async (req, res) => {
     res.status(200).json(userDeleted);
 };
 
+const createAssociatePost = async (req, res) => {
+    const id = req.params.id;
+    const newPost = await Post.create({...req.body, userId:id});
+    res.status(201).json(newPost);
+};
+
 const createPostFull = async (req, res) => { //borrar esta funcion solo usarla para crear mas facil posts
     const id = req.params.id;
     const {descripcion, creado, urlImages, tags} = req.body;
@@ -68,5 +74,6 @@ module.exports = {
     updateUser,
     createUser,
     deleteUser,
+    createAssociatePost,
     createPostFull
 };
