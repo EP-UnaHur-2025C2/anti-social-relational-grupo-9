@@ -1,4 +1,4 @@
-const {post} = require('../db/models')
+const {Post} = require('../db/models')
 
 const creadoValidation =  async (req, res, next) => {
     const creado = new Date(req.body.creado);
@@ -9,7 +9,7 @@ const creadoValidation =  async (req, res, next) => {
 };
 
 const postBeforeCommentValidation = async (req, res, next) => {
-    const existingPost = await post.findByPk(req.params.id)
+    const existingPost = await Post.findByPk(req.params.id)
     const commentCreatedAt = req.body.creado;
     const postCreatedAt = existingPost.creado;
     if(postCreatedAt > commentCreatedAt)

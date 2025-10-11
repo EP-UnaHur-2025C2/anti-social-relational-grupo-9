@@ -4,7 +4,7 @@ const nombreValidation =  async (req, res, next) => {
     const {nombre} = req.body;
     const tagFound = await Tag.findOne({where:{nombre}});
     if(tagFound)
-        return res.status(400).json(`tagMid nombreValidation - El tag ${tag} ya existe.`);
+        return res.status(400).json(`tagMid nombreValidation - El tag ${tagFound.nombre} ya existe.`);
     next();
 };
 

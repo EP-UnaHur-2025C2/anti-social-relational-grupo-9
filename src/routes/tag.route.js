@@ -38,6 +38,7 @@ router.post('/',
 router.put('/:id',
     genericMiddleware.idsValidation,
     genericMiddleware.idExistByModel(Tag),
+    tagMiddleware.nombreValidation,
     tagController.updateTag
 );
 
