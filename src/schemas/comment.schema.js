@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const {fechaSchema, idSchema, stringRequiredNoEmpty} = require('./base.schema');
+const {fechaSchema, idSchema, stringRequiredNoEmpty} = require('./generic.schema');
 
 const commentLength = {text: 'El contenido', minLength:2, maxLength:8000};
 const commonCommentSchema = {contenido:stringRequiredNoEmpty(commentLength), creado:fechaSchema, userId:idSchema('usuario')};

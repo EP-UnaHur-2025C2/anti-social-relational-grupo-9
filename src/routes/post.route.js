@@ -1,18 +1,18 @@
 const {Router} = require('express');
 const router = Router();
-const {postController} = require('../controllers');
+const {postController, genericController} = require('../controllers');
 const {postMiddleware, genericMiddleware, imageMiddleware, commentMiddleware} = require('../middlewares')
 const {Post, User} = require('../db/models');
 const {postSchemas, commentSchemas, imageSchemas, tagSchemas} = require('../schemas')
 
-router.get('/', postController.getPosts);
+router.get('/', genericController.getAll(Post));
 
 router.get('/comments', postController.getFullPostsWithComments);
 
 router.get('/:id',
     genericMiddleware.idsValidation,
     genericMiddleware.idExistByModel(Post),
-    postController.getPostById
+    genericController.getById(Post)
 );
 
 router.get('/:id/comments',
@@ -26,14 +26,14 @@ router.post('/',
     genericMiddleware.idValidationBody('userId'),
     genericMiddleware.idExistByModelBody(User, 'userId'),
     postMiddleware.creadoValidation,
-    postController.createPost
+    genericController.create(Post)
 );
 
 router.put('/:id',
     genericMiddleware.idsValidation,
     genericMiddleware.idExistByModel(Post),
     genericMiddleware.schemaValidator(postSchemas.updatePostSchema),
-    postController.updatePost
+    genericController.update(Post)
 );
 
 router.post("/:id/create-comment",
@@ -65,7 +65,7 @@ router.post("/:id/create-tags",
 router.delete('/:id',
     genericMiddleware.idsValidation,
     genericMiddleware.idExistByModel(Post),
-    postController.deletePost
+    genericController.remove(Post)
 );
 
 module.exports = router;

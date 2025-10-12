@@ -1,16 +1,16 @@
 const {Router} = require('express');
 const router = Router();
-const {imageController} = require('../controllers');
+const {imageController, genericController} = require('../controllers');
 const {genericMiddleware, imageMiddleware} = require('../middlewares')
 const {Post_Image, Post} = require('../db/models');
 const {imageSchemas} = require('../schemas')
 
-router.get('/', imageController.getImages);
+router.get('/', genericController.getAll(Post_Image));
 
 router.get('/:id',
     genericMiddleware.idsValidation,
     genericMiddleware.idExistByModel(Post_Image),
-    imageController.getImageById
+    genericController.getById(Post_Image)
 );
 
 router.get('/:id/tags',
@@ -24,7 +24,7 @@ router.post('/',
     genericMiddleware.idValidationBody('postId'),
     genericMiddleware.idExistByModelBody(Post, 'postId'),
     imageMiddleware.urlValidation,
-    imageController.createImage
+    genericController.create(Post_Image)
 );
 
 router.put('/:id',
@@ -32,13 +32,13 @@ router.put('/:id',
     genericMiddleware.idExistByModel(Post_Image),
     genericMiddleware.schemaValidator(imageSchemas.updateImageSchema),
     imageMiddleware.urlValidation,
-    imageController.updateImage
+    genericController.update(Post_Image)
 );
 
 router.delete('/:id',
     genericMiddleware.idsValidation,
     genericMiddleware.idExistByModel(Post_Image),
-    imageController.deleteImage
+    genericController.remove(Post_Image)
 );
 
 module.exports = router;

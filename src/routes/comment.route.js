@@ -1,11 +1,11 @@
 const {Router} = require('express');
 const router = Router();
-const {commentController} = require('../controllers');
+const {commentController, genericController} = require('../controllers');
 const {genericMiddleware, commentMiddleware} = require('../middlewares')
 const {Comment, Post, User} = require('../db/models');
 const {commentSchemas} = require('../schemas');
 
-router.get('/', commentController.getComments);
+router.get('/', genericController.getAll(Comment));
 
 router.get('/recent/post/:id',
     genericMiddleware.idsValidation,
@@ -31,7 +31,7 @@ router.get("/user/:id",
 router.get('/:id',
     genericMiddleware.idsValidation,
     genericMiddleware.idExistByModel(Comment),    
-    commentController.getCommentById
+    genericController.getById(Comment)
 );
 
 router.post('/',
@@ -41,20 +41,20 @@ router.post('/',
     genericMiddleware.idExistByModelBody(Post, 'postId'),
     genericMiddleware.idExistByModelBody(User, 'userId'),
     commentMiddleware.creadoValidation,
-    commentController.createComment
+    genericController.create(Comment)
 );
 
 router.put('/:id',
     genericMiddleware.idsValidation,
     genericMiddleware.idExistByModel(Comment),
     genericMiddleware.schemaValidator(commentSchemas.updateCommentSchema),
-    commentController.updateComment
+    genericController.update(Comment)
 );
 
 router.delete('/:id',
     genericMiddleware.idsValidation,
     genericMiddleware.idExistByModel(Comment),
-    commentController.deleteComment
+    genericController.remove(Comment)
 );
 
 module.exports = router;

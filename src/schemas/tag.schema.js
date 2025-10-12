@@ -1,9 +1,9 @@
 const Joi = require('joi');
-const {idSchema, stringRequiredNoEmpty, arraySchema} = require('./base.schema');
+const {idSchema, stringRequiredNoEmpty, arraySchema} = require('./generic.schema');
 
-const tagLength = {text: 'El contenido', minLength:2, maxLength:8000}
+const tagLength = {text: 'El contenido', minLength:2, maxLength:8000};
 
-const tagsSchema = arraySchema(stringRequiredNoEmpty(tagLength), 'tag')
+const tagsSchema = arraySchema(stringRequiredNoEmpty(tagLength), 'tag');
 
 const createAndOrAssociateTagsSchema = Joi.object({
     tags:tagsSchema

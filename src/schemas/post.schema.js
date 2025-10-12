@@ -1,7 +1,7 @@
 const Joi = require('joi');
 const {urlImagesSchema} = require('./post_image.schema');
 const {tagsSchema} = require('./tag.schema');
-const {fechaSchema, idSchema, stringRequiredNoEmpty} = require('./base.schema');
+const {fechaSchema, idSchema, stringRequiredNoEmpty} = require('./generic.schema');
 
 const postLength = {text: 'El contenido', minLength:10, maxLength:254};
 const commonPostSchema = {descripcion:stringRequiredNoEmpty(postLength), creado:fechaSchema}

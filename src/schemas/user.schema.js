@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const {fechaSchema, stringRequiredNoEmpty} = require('./base.schema');
+const {fechaSchema, stringRequiredNoEmpty} = require('./generic.schema');
 
 const nickNameLength = {text: 'El nickName', minLength:8, maxLength:50};
 

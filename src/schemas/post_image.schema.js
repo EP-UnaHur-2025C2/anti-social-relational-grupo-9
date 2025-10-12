@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const {idSchema, stringRequiredNoEmpty, arraySchema} = require('./base.schema');
+const {idSchema, stringRequiredNoEmpty, arraySchema} = require('./generic.schema');
 
 const imageLength = {text: 'La url', minLength:5, maxLength:75};
 

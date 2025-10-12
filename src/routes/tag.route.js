@@ -1,11 +1,11 @@
 const {Router} = require('express');
 const router = Router();
-const {tagController} = require('../controllers');
+const {tagController, genericController} = require('../controllers');
 const {genericMiddleware, tagMiddleware} = require('../middlewares');
 const {Tag, Post} = require('../db/models');
 const {tagSchemas} = require('../schemas');
 
-router.get('/', tagController.getTags);
+router.get('/', genericController.getAll(Tag));
 
 router.get('/:id/posts',
     genericMiddleware.idsValidation,
@@ -16,7 +16,7 @@ router.get('/:id/posts',
 router.get('/:id',
     genericMiddleware.idsValidation,
     genericMiddleware.idExistByModel(Tag),
-    tagController.getTagById
+    genericController.getById(Tag)
 );
 
 router.get('/:id/users',
@@ -36,7 +36,7 @@ router.post('/',
     genericMiddleware.idValidationBody('postId'),
     genericMiddleware.idExistByModelBody(Post, 'postId'),
     tagMiddleware.nombreValidation,
-    tagController.createTag
+    genericController.create(Tag)
 );
 
 router.put('/:id',
@@ -44,13 +44,13 @@ router.put('/:id',
     genericMiddleware.idExistByModel(Tag),
     genericMiddleware.schemaValidator(tagSchemas.updateTagSchema),
     tagMiddleware.nombreValidation,
-    tagController.updateTag
+    genericController.update(Tag)
 );
 
 router.delete('/:id',
     genericMiddleware.idsValidation,
     genericMiddleware.idExistByModel(Tag),
-    tagController.deleteTag
+    genericController.remove(Tag)
 );
 
 module.exports = router;

@@ -1,16 +1,16 @@
 const {Router} = require('express');
 const router = Router();
-const {userController} = require('../controllers');
+const {userController, genericController} = require('../controllers');
 const {userMiddleware, postMiddleware, imageMiddleware, genericMiddleware} = require('../middlewares');
 const {User} = require('../db/models')
 const {userSchemas, postSchemas} = require('../schemas')
 
-router.get("/", userController.getUsers);
+router.get("/", genericController.getAll(User));
 
 router.get("/:id",
     genericMiddleware.idsValidation,
     genericMiddleware.idExistByModel(User),
-    userController.getUserById
+    genericController.getById(User)
 );
 
 router.get("/:id/posts",
@@ -30,7 +30,7 @@ router.post("/",
     userMiddleware.nickNameValidation,
     userMiddleware.emailValidation,
     userMiddleware.fechaNacimientoValidation,
-    userController.createUser
+    genericController.create(User)
 );
 
 router.post("/:id/create-post",
@@ -57,13 +57,13 @@ router.put("/:id",
     userMiddleware.updateNickNameValidation,
     userMiddleware.updateEmailValidation,
     userMiddleware.fechaNacimientoValidation,
-    userController.updateUser
+    genericController.update(User)
 );
 
 router.delete("/:id",
     genericMiddleware.idsValidation,
     genericMiddleware.idExistByModel(User),
-    userController.deleteUser
+    genericController.remove(User)
 );
 
 module.exports = router;
