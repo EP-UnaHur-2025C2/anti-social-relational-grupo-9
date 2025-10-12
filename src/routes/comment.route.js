@@ -54,6 +54,7 @@ router.put('/:id',
 router.delete('/:id',
     genericMiddleware.idsValidation,
     genericMiddleware.idExistByModel(Comment),
-    commentController.deleteComment);
+    commentController.deleteComment
+);
 
 module.exports = router;
