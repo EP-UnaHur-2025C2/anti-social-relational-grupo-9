@@ -17,7 +17,7 @@ const createAssociatePostSchema = Joi.object({
 
 const createPostFullSchema = Joi.object({
     ...commonPostSchema,
-    urlImages:urlImagesSchema,
+    urls:urlImagesSchema,
     tags:tagsSchema
 });
 

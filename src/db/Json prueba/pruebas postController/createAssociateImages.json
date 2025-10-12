@@ -1,0 +1,21 @@
+
+[
+    {
+        "urls": ["urlImagenPrueba1", "urlImagenPrueba2"]
+    },
+    {
+        "urls": ["urlImagenPrueba3", "urlImagenPrueba4"]
+    },
+    {
+        "urls": ["urlImagenPrueba5"]
+    },
+    {
+        "urls": ["urlImagenPrueba6", "urlImagenPrueba7", "urlImagenPrueba8"]
+    },
+    {
+        "urls": ["urlImagenPrueba9", "urlImagenPrueba10"]
+    },
+    {
+        "urls": ["urlImagenPrueba11", "urlImagenPrueba12", "urlImagenPrueba13", "urlImagenPrueba14", "urlImagenPrueba15"]
+    }
+]

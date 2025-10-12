@@ -2,17 +2,14 @@ const Joi = require('joi');
 const {fechaSchema, idSchema, stringRequiredNoEmpty} = require('./base.schema');
 
 const commentLength = {text: 'El contenido', minLength:2, maxLength:8000};
+const commonCommentSchema = {contenido:stringRequiredNoEmpty(commentLength), creado:fechaSchema, userId:idSchema('usuario')};
 
 const postCommentSchema = Joi.object({
-    contenido:stringRequiredNoEmpty(commentLength),
-    creado:fechaSchema,
-    userId:idSchema('usuario'),
+    ...commonCommentSchema
 });
 
 const commentSchema = Joi.object({
-    contenido:stringRequiredNoEmpty(commentLength),
-    creado:fechaSchema,
-    userId:idSchema('usuario'),
+    ...commonCommentSchema,
     postId:idSchema('post')
 });
 

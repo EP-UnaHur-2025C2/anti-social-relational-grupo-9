@@ -43,18 +43,18 @@ const deletePost = async (req, res) => {
 };
 
 const createAssociateImages = async (req, res) => {
-    const id = req.params.id;
-    const {urlImages} = req.body;
+    const postId = req.params.id;
+    const {urls} = req.body;
     let newImages = [];
-    for(let url of urlImages) {
-        newImages.push(await Post_Image.create({url, postId:id}));
+    for(let url of urls) {
+        newImages.push(await Post_Image.create({url, postId}));
     }
     res.status(201).json(newImages);
 };
 
 const createAssociateComment = async (req, res) => {
-    const id = req.params.id;
-    const newComment = await Comment.create({...req.body, postId:id});
+    const postId = req.params.id;
+    const newComment = await Comment.create({...req.body, postId});
     res.status(201).json(newComment);
 };
 

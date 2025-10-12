@@ -52,9 +52,9 @@ const createAssociatePost = async (req, res) => {
 
 const createPostFull = async (req, res) => { //borrar esta funcion solo usarla para crear mas facil posts
     const id = req.params.id;
-    const {descripcion, creado, urlImages, tags} = req.body;
+    const {descripcion, creado, urls, tags} = req.body;
     const newPost = await Post.create({descripcion, creado, userId:id});
-    for(let url of urlImages) await newPost.createImage({url});//createImage viene del as:images de la asociacion
+    for(let url of urls) await newPost.createImage({url});//createImage viene del as:images de la asociacion
     for(let tag of tags) {
         let tagFound = await Tag.findOne({where:{nombre:tag}}); 
         if(!tagFound)

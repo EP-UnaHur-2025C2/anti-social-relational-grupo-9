@@ -50,7 +50,7 @@ router.post("/:id/create-comment",
 router.post("/:id/create-images",
     genericMiddleware.idsValidation,
     genericMiddleware.idExistByModel(Post),
-    genericMiddleware.schemaValidator(postSchemas.createAssociateImagesSchema),
+    genericMiddleware.schemaValidator(imageSchemas.createAssociateImagesSchema),
     imageMiddleware.urlsValidation,
     postController.createAssociateImages
 );
@@ -58,7 +58,7 @@ router.post("/:id/create-images",
 router.post("/:id/create-tags",
     genericMiddleware.idsValidation,
     genericMiddleware.idExistByModel(Post),
-    genericMiddleware.schemaValidator(postSchemas.createAndOrAssociateTagsSchema),
+    genericMiddleware.schemaValidator(tagSchemas.createAndOrAssociateTagsSchema),
     postController.createAndOrAssociateTags
 );
 
