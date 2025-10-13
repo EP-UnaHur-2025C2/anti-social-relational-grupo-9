@@ -1,17 +1,21 @@
 const Joi = require('joi');
 const {fechaSchema, idSchema, stringSchema} = require('./generic.schema');
 
-const validateCommentParams = {text:'contenido', minLength:2, maxLength:8000};
-const commonCommentSchema = {contenido:stringSchema(validateCommentParams), creado:fechaSchema, userId:idSchema('usuario')};
+const contenidoSchema = stringSchema({text:'contenido', minLength:2, maxLength:8000});
+const commonSchemas = {
+    contenido:contenidoSchema,
+    creado:fechaSchema,
+    userId:idSchema('usuario')
+};
 
-const postCommentSchema = Joi.object({...commonCommentSchema});
+const postCommentSchema = Joi.object({...commonSchemas});
 
 const commentSchema = Joi.object({
-    ...commonCommentSchema,
+    ...commonSchemas,
     postId:idSchema('post')
 });
 
-const updateCommentSchema = Joi.object({contenido:stringSchema(validateCommentParams)});
+const updateCommentSchema = Joi.object({contenido:contenidoSchema});
 
 module.exports = {
     commentSchema,

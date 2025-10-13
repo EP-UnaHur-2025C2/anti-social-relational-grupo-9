@@ -1,10 +1,10 @@
 const Joi = require('joi');
 const {fechaSchema, stringSchema} = require('./generic.schema');
 
-const validateNickNameParams = {text: 'nickName', minLength:8, maxLength:50};
+const nickNameSchema = stringSchema({text: 'nickName', minLength:8, maxLength:50});
 
 const userSchema = Joi.object({
-    nickName:stringSchema(validateNickNameParams),
+    nickName:nickNameSchema,
     fechaNacimiento:fechaSchema,
     email:Joi.string().required().email().messages({
         "any.required":"El email es obligatorio.",

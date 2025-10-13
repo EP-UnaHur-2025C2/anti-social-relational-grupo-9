@@ -5,7 +5,7 @@ const urlsValidation = async (req, res, next) => {
     const existingUrls = await Post_Image.findAll({});
     const urlsFound = existingUrls.filter(u => urls.includes(u.url));
     if(urlsFound.length > 0) {
-        return res.status(400).json(`imageMid urlValidation - La/s url/s ${urlsFound.map(u => u.url)} ya se encuentra/n registrada/s.`)
+        return res.status(400).json(`imageMid urlsValidation - La/s url/s ${urlsFound.map(u => u.url)} ya se encuentra/n registrada/s.`)
     };
     next();
 };

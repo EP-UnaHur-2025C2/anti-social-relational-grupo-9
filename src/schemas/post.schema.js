@@ -3,23 +3,26 @@ const {arrayImagesSchema} = require('./post_image.schema');
 const {arrayTagsSchema} = require('./tag.schema');
 const {fechaSchema, idSchema, stringSchema} = require('./generic.schema');
 
-const validateDescripcionParams = {text:'descripcion', minLength:10, maxLength:254};
-const commonPostSchema = {descripcion:stringSchema(validateDescripcionParams), creado:fechaSchema}
+const descripcionSchema = stringSchema({text:'descripcion', minLength:10, maxLength:254});
+const commonSchemas = {
+    descripcion:descripcionSchema,
+    creado:fechaSchema
+};
 
 const postSchema = Joi.object({
-    ...commonPostSchema,
+    ...commonSchemas,
     userId:idSchema('usuario')
 });
 
-const createAssociatePostSchema = Joi.object({...commonPostSchema});
+const createAssociatePostSchema = Joi.object({...commonSchemas});
 
 const createPostFullSchema = Joi.object({
-    ...commonPostSchema,
+    ...commonSchemas,
     urls:arrayImagesSchema,
     tags:arrayTagsSchema
 });
 
-const updatePostSchema = Joi.object({descripcion:stringSchema(validateDescripcionParams)});
+const updatePostSchema = Joi.object({descripcion:descripcionSchema});
 
 module.exports = {
     postSchema,

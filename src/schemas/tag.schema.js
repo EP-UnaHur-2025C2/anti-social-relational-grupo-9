@@ -1,9 +1,10 @@
 const Joi = require('joi');
 const {idSchema, stringSchema, stringArraySchema} = require('./generic.schema');
 
-const validateNombreParams = {text:'nombre', minLength:2, maxLength:25};
-const nombreSchema = stringSchema(validateNombreParams);
-const arrayTagsSchema = stringArraySchema({text:'tag', ...validateNombreParams});
+const nombreSchemaParams = {text:'nombre', minLength:2, maxLength:25};
+
+const nombreSchema = stringSchema(nombreSchemaParams);
+const arrayTagsSchema = stringArraySchema({text:'tag', ...nombreSchemaParams});
 
 const createAndOrAssociateTagsSchema = Joi.object({tags:arrayTagsSchema});
 

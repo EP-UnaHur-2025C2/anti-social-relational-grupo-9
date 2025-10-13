@@ -21,7 +21,7 @@ const stringSchema = ({text, minLength, maxLength}) => {
     });
 };
 
-const arraySchema = ({text, schema}) => {
+const arraySchema = (text, schema) => {
     return Joi.array().required().items(schema).messages({
         "array.base":`${text}s debe ser un array.`,
         "array.includesRequiredUnknowns":`El array de ${text}s debe tener al menos un elemento.`,
