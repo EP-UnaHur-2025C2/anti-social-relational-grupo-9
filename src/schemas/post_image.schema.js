@@ -1,21 +1,22 @@
 const Joi = require('joi');
-const {idSchema, stringRequiredNoEmpty, arraySchema} = require('./generic.schema');
+const {idSchema, stringSchema, stringArraySchema} = require('./generic.schema');
 
-const imageLength = {text: 'La url', minLength:5, maxLength:75};
+const validateUrlParams = {text:'url', minLength:5, maxLength:75};
+const urlSchema = stringSchema(validateUrlParams);
+const arrayImagesSchema = stringArraySchema(validateUrlParams)
 
-const urlImagesSchema = arraySchema(stringRequiredNoEmpty(imageLength), 'url');
-
-const createAssociateImagesSchema = Joi.object({
-    urls:urlImagesSchema
-});
+const createAssociateImagesSchema = Joi.object({urls:arrayUrlsSchema});
 
 const imageSchema = Joi.object({
-    url:stringRequiredNoEmpty(imageLength),
+    url:urlSchema,
     postId:idSchema('post')
 });
 
-const updateImageSchema = Joi.object({
-    url:stringRequiredNoEmpty(imageLength)
-});
+const updateImageSchema = Joi.object({url:urlSchema});
 
-module.exports = {imageSchema, urlImagesSchema, updateImageSchema, createAssociateImagesSchema};
+module.exports = {
+    imageSchema,
+    arrayImagesSchema,
+    updateImageSchema,
+    createAssociateImagesSchema
+};

@@ -1,21 +1,22 @@
 const Joi = require('joi');
-const {idSchema, stringRequiredNoEmpty, arraySchema} = require('./generic.schema');
+const {idSchema, stringSchema, stringArraySchema} = require('./generic.schema');
 
-const tagLength = {text: 'El contenido', minLength:2, maxLength:8000};
+const validateNombreParams = {text:'nombre', minLength:2, maxLength:25};
+const nombreSchema = stringSchema(validateNombreParams);
+const arrayTagsSchema = stringArraySchema({text:'tag', ...validateNombreParams});
 
-const tagsSchema = arraySchema(stringRequiredNoEmpty(tagLength), 'tag');
-
-const createAndOrAssociateTagsSchema = Joi.object({
-    tags:tagsSchema
-});
+const createAndOrAssociateTagsSchema = Joi.object({tags:arrayTagsSchema});
 
 const tagSchema = Joi.object({
-    nombre:stringRequiredNoEmpty(tagLength),
+    nombre:nombreSchema,
     postId:idSchema('post')
 });
 
-const updateTagSchema = Joi.object({
-    nombre:stringRequiredNoEmpty(tagLength)
-});
+const updateTagSchema = Joi.object({nombre:nombreSchema});
 
-module.exports = {tagSchema, tagsSchema, updateTagSchema, createAndOrAssociateTagsSchema};
+module.exports = {
+    tagSchema,
+    arrayTagsSchema,
+    updateTagSchema,
+    createAndOrAssociateTagsSchema
+};

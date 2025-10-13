@@ -11,7 +11,7 @@ const idSchema = (model) => Joi.number().required().messages({
     "number.base":`El id de ${model} debe ser un numero.`
 });
 
-const stringRequiredNoEmpty = ({text, minLength, maxLength}) => {
+const stringSchema = ({text, minLength, maxLength}) => {
     return Joi.string().required().min(minLength).max(maxLength).messages({
             "any.required":`${text} es obligatorio/a.`,
             "string.min": `${text} debe tener {#limit} caracteres como minimo.`,
@@ -21,9 +21,21 @@ const stringRequiredNoEmpty = ({text, minLength, maxLength}) => {
     });
 };
 
-const arraySchema = (schema, text) => Joi.array().required().items(schema).messages({
-    "array.base":`${text}s debe ser un array.`,
-    "array.includesRequiredUnknowns":`El array de ${text}s debe tener al menos un elemento.`,
-});
+const arraySchema = ({text, schema}) => {
+    return Joi.array().required().items(schema).messages({
+        "array.base":`${text}s debe ser un array.`,
+        "array.includesRequiredUnknowns":`El array de ${text}s debe tener al menos un elemento.`,
+    });
+};
 
-module.exports = {fechaSchema, idSchema, stringRequiredNoEmpty, arraySchema};
+const stringArraySchema = (params) => {
+    return arraySchema(params.text, stringSchema(params));
+};
+
+module.exports = {
+    fechaSchema,
+    idSchema,
+    stringSchema,
+    arraySchema,
+    stringArraySchema
+};
