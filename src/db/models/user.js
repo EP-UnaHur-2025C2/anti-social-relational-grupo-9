@@ -20,6 +20,28 @@ module.exports = (sequelize, DataTypes) => {
         as:'comments',
         onDelete:'CASCADE'
       });
+      //interpretacion de as:'followers' y foreignKey:'followedId'
+      //si quiero traer los seguidores (followers) del user 1
+      //tengo que buscar el 1 en quienes son seguidos (followedId)
+      //y traer los ids de la columna seguidores (followerId) q coincidan
+      User.belongsToMany(models.User, {
+        through:models.Follow,
+        as:'followers',
+        foreignKey:{name:'followedId'},
+        otherKey:{name:'followerId'},
+        timestamps:false
+      });
+      //interpretacion de as:'followings' y foreignKey:'followerId'
+      //si quiero traer los seguidos (followings) por el user 1
+      //tengo que buscar el 1 en los seguidores (followerId)
+      //y traer los ids de la columna seguidos (followedId) q coincidan
+      User.belongsToMany(models.User, {
+        through:models.Follow,
+        as:'followings',
+        foreignKey:{name:'followerId'},
+        otherKey:{name:'followedId'},
+        timestamps:false
+      });
     }
   }
   User.init({

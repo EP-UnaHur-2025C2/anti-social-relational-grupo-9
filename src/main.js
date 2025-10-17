@@ -19,6 +19,7 @@ app.use('/posts', routes.postRoute);
 app.use('/comments', routes.commentRoute);
 app.use('/tags', routes.tagRoute);
 app.use('/images', routes.imageRoute);
+app.use('/follows', routes.followRoute)
 
 app.listen(PORT, async () => {
     console.log(`La app esta escuchando en el puerto ${PORT}`)

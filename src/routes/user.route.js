@@ -2,7 +2,7 @@ const {Router} = require('express');
 const router = Router();
 const {userController, genericController} = require('../controllers');
 const {userMiddleware, postMiddleware, imageMiddleware, genericMiddleware} = require('../middlewares');
-const {User} = require('../db/models')
+const {User, Follow} = require('../db/models')
 const {userSchemas, postSchemas} = require('../schemas')
 
 router.get("/", genericController.getAll(User));

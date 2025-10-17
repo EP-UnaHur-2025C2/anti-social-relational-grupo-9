@@ -40,5 +40,5 @@ module.exports = {
     getUserWithPosts,
     getUserImages,
     createAssociatePost,
-    createPostFull
+    createPostFull,
 };

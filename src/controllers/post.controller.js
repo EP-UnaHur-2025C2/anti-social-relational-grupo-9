@@ -11,14 +11,6 @@ const getFullPostWithComments = async (req, res) => {
     res.status(200).json(foundPost);
 };
 
-const updatePost = async (req, res) => {
-    const id = req.params.id;
-    const {descripcion} = req.body;
-    await Post.update({descripcion}, {where:{id}}) //no toma en cuenta el userId ni la fecha de creado
-    const updatedPost = await Post.findByPk(id);
-    res.status(200).json(updatedPost);
-};
-
 const createAssociateImages = async (req, res) => {
     const postId = req.params.id;
     const {urls} = req.body;
@@ -56,7 +48,6 @@ const createAndOrAssociateTags = async (req, res) => {
 module.exports = {
     getFullPostsWithComments,
     getFullPostWithComments,
-    updatePost,
     createAssociateImages,
     createAssociateComment,
     createAndOrAssociateTags

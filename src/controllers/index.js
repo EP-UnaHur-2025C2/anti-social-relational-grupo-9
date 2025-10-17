@@ -4,6 +4,7 @@ const commentController = require('./comment.controller');
 const tagController = require('./tag.controller');
 const imageController = require('./post_image.controller');
 const genericController = require('./generic.controller');
+const followController = require('./follow.controller');
 
 module.exports = {
     userController,
@@ -11,5 +12,6 @@ module.exports = {
     commentController,
     tagController,
     imageController,
-    genericController
+    genericController,
+    followController
 };
