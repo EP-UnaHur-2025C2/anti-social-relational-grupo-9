@@ -14,15 +14,15 @@ const postSchema = Joi.object({
     userId:idSchema('usuario')
 });
 
-const createAssociatePostSchema = Joi.object({...commonSchemas});
+const createAssociatePostSchema = Joi.object({...commonSchemas}).unknown(false);
 
 const createPostFullSchema = Joi.object({
     ...commonSchemas,
     urls:arrayImagesSchema,
     tags:arrayTagsSchema
-});
+}).unknown(false);
 
-const updatePostSchema = Joi.object({descripcion:descripcionSchema});
+const updatePostSchema = Joi.object({descripcion:descripcionSchema}).unknown(false);
 
 module.exports = {
     postSchema,

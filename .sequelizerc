@@ -1,0 +1,12 @@
+//esto sirve para q tome el config.js y el sequelize-cli lo pueda encontrar en su path
+
+const path = require('path');
+
+console.log(path.resolve(__dirname, 'src', 'db', 'config', 'config.js'));
+
+module.exports = {
+  'config': path.resolve(__dirname, 'src', 'db', 'config', 'config.js'),
+  'models-path': path.resolve(__dirname, 'src', 'db', 'models'),
+  'seeders-path': path.resolve(__dirname, 'src', 'db', 'seeders'),
+  'migrations-path': path.resolve(__dirname, 'src', 'db', 'migrations')
+};

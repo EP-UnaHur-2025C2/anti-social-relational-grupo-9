@@ -6,14 +6,14 @@ const nombreSchemaParams = {text:'nombre', minLength:2, maxLength:25};
 const nombreSchema = stringSchema(nombreSchemaParams);
 const arrayTagsSchema = stringArraySchema({text:'tag', ...nombreSchemaParams});
 
-const createAndOrAssociateTagsSchema = Joi.object({tags:arrayTagsSchema});
+const createAndOrAssociateTagsSchema = Joi.object({tags:arrayTagsSchema}).unknown(false);
 
 const tagSchema = Joi.object({
     nombre:nombreSchema,
     postId:idSchema('post')
 });
 
-const updateTagSchema = Joi.object({nombre:nombreSchema});
+const updateTagSchema = Joi.object({nombre:nombreSchema}).unknown(false);
 
 module.exports = {
     tagSchema,
