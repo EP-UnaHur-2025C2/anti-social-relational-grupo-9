@@ -1,10 +1,12 @@
+const {Follow} = require('../db/models')
+
 const followValidation = (idModel) => {
     return async (req, res, next) => {
         const followerId = req.params.id;
         const followedId = req.body[idModel];
         const existingFollow = await Follow.findOne({where:{followerId, followedId}});
         if(!existingFollow)
-            return res.status(409).json(`followMid followValidation - El usuario ${followedId} no sigue al usuario ${followedId}`);
+            return res.status(409).json(`followMid followValidation - El usuario ${followerId} no sigue al usuario ${followedId}`);
         next();
     };
 };
@@ -15,7 +17,7 @@ const notFollowValidation = (idModel) => {
         const followedId = req.body[idModel];
         const existingFollow = await Follow.findOne({where:{followerId, followedId}});
         if(existingFollow)
-            return res.status(409).json(`followMid notFollowValidation - El usuario ${followedId} ya sigue al usuario ${followedId}`);
+            return res.status(409).json(`followMid notFollowValidation - El usuario ${followerId} ya sigue al usuario ${followedId}`);
         next();
     };
 };

@@ -3,11 +3,13 @@ const postSchemas = require('./post.schema');
 const imageSchemas = require('./post_image.schema');
 const tagSchemas = require('./tag.schema');
 const commentSchemas = require('./comment.schema');
+const followSchemas = require('./follow.schema')
 
 module.exports = {
     userSchemas,
     postSchemas,
     imageSchemas,
     tagSchemas,
-    commentSchemas
+    commentSchemas,
+    followSchemas
 };

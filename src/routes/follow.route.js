@@ -3,7 +3,7 @@ const router = Router();
 const {followController, genericController} = require('../controllers');
 const {genericMiddleware, followMiddleware} = require('../middlewares');
 const {User, Follow} = require('../db/models')
-const {userSchemas, postSchemas} = require('../schemas')
+const {followSchemas} = require('../schemas')
 
 router.get("/", genericController.getAll(Follow));
 
@@ -21,8 +21,9 @@ router.get("/:id/followings",
 
 router.post("/:id/create-follow",
     genericMiddleware.idsValidation,
-    genericMiddleware.idValidationBody('followedId'),
     genericMiddleware.idExistByModel(User),
+    genericMiddleware.schemaValidator(followSchemas.followIdSchema),
+    genericMiddleware.idValidationBody('followedId'),
     genericMiddleware.idExistByModelBody(User, 'followedId'),
     followMiddleware.autoFollowValidation('followedId'),
     followMiddleware.notFollowValidation('followedId'),
@@ -30,9 +31,10 @@ router.post("/:id/create-follow",
 );
 router.put("/:id/update-follow",
     genericMiddleware.idsValidation,
+    genericMiddleware.idExistByModel(User),
+    genericMiddleware.schemaValidator(followSchemas.updateFollowIdSchema),
     genericMiddleware.idValidationBody('followedId'),
     genericMiddleware.idValidationBody('newFollowedId'),
-    genericMiddleware.idExistByModel(User),
     genericMiddleware.idExistByModelBody(User, 'followedId'),
     genericMiddleware.idExistByModelBody(User, 'newFollowedId'),
     followMiddleware.autoFollowValidation('newFollowedId'),
@@ -43,8 +45,9 @@ router.put("/:id/update-follow",
 
 router.delete("/:id/delete-follow",
     genericMiddleware.idsValidation,
-    genericMiddleware.idValidationBody('followedId'),
     genericMiddleware.idExistByModel(User),
+    genericMiddleware.schemaValidator(followSchemas.followIdSchema),
+    genericMiddleware.idValidationBody('followedId'),
     genericMiddleware.idExistByModelBody(User, 'followedId'),
     followMiddleware.autoFollowValidation('followedId'),
     followMiddleware.followValidation('followedId'),
