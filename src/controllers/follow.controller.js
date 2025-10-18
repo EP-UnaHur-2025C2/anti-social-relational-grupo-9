@@ -20,23 +20,23 @@ const createFollower = async (req, res) => {
     const follower = await User.findByPk(followerId)
     const followed = await User.findByPk(followedId)
     await follower.addFollowing(followed)
-    const follow = await Follow.findAll({where:{followerId, followedId}, include:[{model:User, as:'follower'}, {model:User, as:'followed'}]})
+    const follow = await Follow.findOne({where:{followerId, followedId}, include:[{model:User, as:'follower'}, {model:User, as:'followed'}]})
     res.status(201).json(follow);
 };
 const updateFollowing = async (req, res) => {
     const followerId = req.params.id;
     const {followedId, newFollowedId} = req.body;
-    const updatedFollow = await Follow.update(newFollowedId, {where:{followerId, followedId}, include:[{model:User, as:'follower'}, {model:User, as:'followed'}]})
-    res.status(201).json(updatedFollow);
+    await Follow.update({followedId:newFollowedId}, {where:{followerId, followedId}})
+    const updatedRecord = await Follow.findOne({where:{followerId, followedId:newFollowedId}, include:[{model:User, as:'follower'}, {model:User, as:'followed'}]});
+    res.status(201).json(updatedRecord);
 };
+
 const deleteFollowing = async (req, res) => {
     const followerId = req.params.id;
     const {followedId} = req.body;
-    const follower = await User.findByPk(followerId)
-    const followed = await User.findByPk(followedId)
-    await follower.addFollowing(followed)
-    const follow = await Follow.findAll({where:{followerId, followedId}, include:[{model:User, as:'follower'}, {model:User, as:'followed'}]})
-    res.status(201).json(follow);
+    const follow = await Follow.findOne({where:{followerId, followedId}, include:[{model:User, as:'follower'}, {model:User, as:'followed'}]})
+    const deletedRecord = await follow.destroy();
+    res.status(201).json(deletedRecord);
 };
 
 

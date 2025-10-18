@@ -1,11 +1,3 @@
-// const idValidation = (req, res, next) => {
-//     console.log(req.params)
-//     const id = req.params.id;
-//     if(id <= 0)
-//         return res.status(400).json('genericMid idValidation - Bad Request: El id no puede ser cero o negativo')
-//     next()
-// };
-
 const idsValidation = (req, res, next) => {
     let msj = `genericMid idsValidation - Bad Request: `;
     for(let id in req.params) {

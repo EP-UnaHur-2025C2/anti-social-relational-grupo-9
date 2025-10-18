@@ -4,6 +4,7 @@ const imageMiddleware = require('./post_image.middleware');
 const tagMiddleware = require('./tag.middleware');
 const commentMiddleware = require('./comment.middleware');
 const genericMiddleware = require('./generic.middleware');
+const followMiddleware = require('./follow.middleware')
 
 module.exports = {
     userMiddleware,
@@ -11,5 +12,6 @@ module.exports = {
     imageMiddleware,
     tagMiddleware,
     commentMiddleware,
-    genericMiddleware
+    genericMiddleware,
+    followMiddleware
 };
