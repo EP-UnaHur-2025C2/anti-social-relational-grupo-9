@@ -45,6 +45,13 @@ components: #datos y modelos de datos reusables
       schema:
         type: integer
       description: ID del comentario
+    FollowIdParam:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: ID del usuario
     postId:
       name: postId
       in: path
@@ -59,6 +66,20 @@ components: #datos y modelos de datos reusables
       schema:
         type: integer
       description: ID del usuario
+    followedId:
+      name: followedId
+      in: body
+      required: true
+      schema:
+        type: integer
+      description: ID del followed
+    newFollowedId:
+      name: newFollowedId
+      in: body
+      required: true
+      schema:
+        type: integer
+      description: ID del nuevo followed
   schemas: #modelos con sus propiedades
     User:
       type: object
@@ -119,7 +140,31 @@ components: #datos y modelos de datos reusables
         postId:
           type: integer
           example: 1
-    CommentTag:
+    Follow:
+      type: object
+      properties:
+        followerId:
+          type: integer
+          example: 1
+        followedId:
+          type: integer
+          example: 2
+    update-follow:
+      type: object
+      properties:
+        followedId:
+          type: integer
+          example: 1
+        newFollowedId:
+          type: integer
+          example: 2
+    create-delete-follow:
+      type: object
+      properties:
+        followedId:
+          type: integer
+          example: 2
+    Post_Tag:
       type: object
       properties:
         postId:
@@ -405,7 +450,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  urlImages:
+                  urls:
                     type: array
                     items:
                       type: string
@@ -803,3 +848,103 @@ paths:
           description: OK
         '404':
           description: Usuario no encontrado
+# Endpoints follows
+  /follows:
+    get:
+      summary: Lista todos los follows
+      tags:
+        - Follows
+      responses:
+        '200':
+          description: OK
+  /follows/{id}/create-follow:
+    post:
+        summary: Crear un nuevo follow
+        tags:
+          - Follows
+        parameters:
+        - $ref: '#/components/parameters/FollowIdParam'
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/create-delete-follow'
+        responses:
+          '201':
+            description: Follow creado con exito
+          '400':
+            description: Solicitud incorrecta
+          '500':
+            description: Error interno del servidor
+          '404':
+            description: Usuario no encontrado
+          '409':
+            description: Conflicto al procesar la solicitud
+  /follows/{id}/followers:
+    get:
+      summary: Lista todos los seguidores de un usuario
+      tags:
+        - Follows
+      parameters:
+        - $ref: '#/components/parameters/FollowIdParam'
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Usuario no encontrado
+  /follows/{id}/followings:
+    get:
+      summary: Lista todos los seguidos por un usuario
+      tags:
+        - Follows
+      parameters:
+        - $ref: '#/components/parameters/FollowIdParam'
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Usuario no encontrado
+  /follows/{id}/update-follow:
+    put:
+      summary: Actualizar a un usuario seguido por ID
+      tags:
+        - Follows
+      parameters:
+        - $ref: '#/components/parameters/FollowIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update-follow'
+      responses:
+        '201':
+          description: Followed actualizado con exito
+        '400':
+          description: Solicitud incorrecta
+        '500':
+          description: Error interno del servidor
+        '404':
+          description: Follow no encontrado
+  /follows/{id}/delete-follow:
+    delete:
+      summary: Borrar un follow por ID
+      tags:
+        - Follows
+      requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/create-delete-follow'
+      parameters:
+        - $ref: '#/components/parameters/FollowIdParam'
+      responses:
+        '200':
+          description: Follow eliminado con exito
+        '500':
+          description: Error interno del servidor
+        '404':
+          description: Follow no encontrado
+

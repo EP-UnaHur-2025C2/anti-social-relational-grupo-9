@@ -1,0 +1,22 @@
+[
+    {
+        "followedId":1,
+        "newFollowedId":2
+    },
+    {
+        "followedId":2,
+        "newFollowedId":3
+    },
+    {
+        "followedId":3,
+        "newFollowedId":4
+    },
+    {
+        "followedId":4,
+        "newFollowedId":5
+    },
+    {
+        "followedId":5,
+        "newFollowedId":1
+    }
+]
