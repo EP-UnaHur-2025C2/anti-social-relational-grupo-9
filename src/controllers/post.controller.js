@@ -27,50 +27,23 @@ const createAssociateComment = async (req, res) => {
     res.status(201).json(newComment);
 };
 
-const associateTag = async (post, tag) => {
-    return await post.addTag(tag);
-};
-
-const createTag = async (post, tag) => {
-    return await post.createTag({nombre:tag});
-};
-
-const existingTag = async (tag) => {
-    return await Tag.findOne({where:{nombre:tag}});
-};
-
-const createOrAssociateTags = async (post, tags, newTags) => {
-    for(let tag of tags) {
-        const tagInstance = await existingTag(tag);
-        await tagInstance ? newTags.push(await associateTag(post, tagInstance)) : newTags.push(await createTag(post, tag));
-    };
-    return newTags;
-};
-
 const createAndOrAssociateTags = async (req, res) => {
     const id = req.params.id;
     const {tags} = req.body;
-    const existingPost = await Post.findByPk(id);
-    const newTags = await createOrAssociateTags(existingPost, tags, []);
+    const newTags = [];
+    const existingPost = await Post.findOne({where:{id}});
+    for(let tag of tags) {
+        let existingTag = await Tag.findOne({where:{nombre:tag}});
+        if(existingTag) {
+            await existingPost.addTag(existingTag);
+            newTags.push(existingTag);
+        }
+        else {
+            newTags.push(await existingPost.createTag({nombre:tag}));
+        }
+    }
     res.status(201).json(newTags);
 };
-// const createAndOrAssociateTags = async (req, res) => {
-//     const id = req.params.id;
-//     const {tags} = req.body;
-//     const newTags = [];
-//     const existingPost = await Post.findOne({where:{id}});
-//     for(let tag of tags) {
-//         let existingTag = await Tag.findOne({where:{nombre:tag}});
-//         if(existingTag) {
-//             await existingPost.addTag(existingTag);
-//             newTags.push(existingTag);
-//         }
-//         else {
-//             newTags.push(await existingPost.createTag({nombre:tag}));
-//         }
-//     }
-//     res.status(201).json(newTags);
-// };
 
 module.exports = {
     getFullPostsWithComments,
