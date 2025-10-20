@@ -1,4 +1,5 @@
 const {User, Post, Post_Image, Tag} = require('../db/models');
+const {tagService} = require('../service functions');
 
 const getUserWithPosts = async (req, res) => {
     const id = req.params.id;
@@ -25,16 +26,10 @@ const createPostFull = async (req, res) => { //borrar esta funcion solo usarla p
     const {descripcion, creado, urls, tags} = req.body;
     const newPost = await Post.create({descripcion, creado, userId:id});
     for(let url of urls) await newPost.createImage({url});//createImage viene del as:images de la asociacion
-    for(let tag of tags) {
-        let tagFound = await Tag.findOne({where:{nombre:tag}}); 
-        if(!tagFound)
-            await newPost.createTag({nombre:tag});
-        else
-            await newPost.addTag(tagFound);
-    }
+    const newTags = await tagService.createOrAssociateTags(newPost, tags)
     const newPostFull = await Post.findOne({where: {id:newPost.id}, include:[{model:Post_Image, as:'images'}, {model:Tag, as:'tags', through:{attributes:[]}}]});
     res.status(201).json(newPostFull);
-}
+};
 
 module.exports = {
     getUserWithPosts,

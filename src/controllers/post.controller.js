@@ -1,4 +1,5 @@
 const {Post, Post_Image, Comment, Tag} = require('../db/models');
+const {tagService} = require('../service functions');
 
 const getFullPostsWithComments = async (req, res) => {
     const foundPosts = await Post.findAll({where:{}, include:[{model:Post_Image, as:'images'}, {model:Tag, as:'tags', through:{attributes:[]}}, {model:Comment, as:'comments'}]});
@@ -30,18 +31,8 @@ const createAssociateComment = async (req, res) => {
 const createAndOrAssociateTags = async (req, res) => {
     const id = req.params.id;
     const {tags} = req.body;
-    const newTags = [];
-    const existingPost = await Post.findOne({where:{id}});
-    for(let tag of tags) {
-        let existingTag = await Tag.findOne({where:{nombre:tag}});
-        if(existingTag) {
-            await existingPost.addTag(existingTag);
-            newTags.push(existingTag);
-        }
-        else {
-            newTags.push(await existingPost.createTag({nombre:tag}));
-        }
-    }
+    const existingPost = await Post.findByPk(id);
+    const newTags = await tagService.createOrAssociateTags(existingPost, tags);
     res.status(201).json(newTags);
 };
 
