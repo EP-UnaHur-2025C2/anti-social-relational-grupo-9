@@ -101,21 +101,6 @@ Cada entidad tiene el fin de registrar:
     "sequelize-cli": "^6.6.3" // --> Manejo de la BD y creacion de la estructura del proyecto sequelize  a partir de comandos de terminal
   }
 ```
-
-#### Utilizar nodemon:
-- Para utilizar la libreria nodemon se debe configurar el **package.json** en la propiedad scripts el punto de entrada de la app como **"dev": "nodemon src/main.js"**
-
-```json
-{
-  "name": "anti-social",
-  "version": "1.0.0",
-  "description": "UnaHur anti-social net - Trabajo Práctico",
-  "main": "index.js",
-  "scripts": {
-    "dev": "nodemon src/main.js", // --> Configurar propiedad
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-```
     
 ## Correr el Proyecto
 
@@ -143,17 +128,32 @@ Cada entidad tiene el fin de registrar:
   npm install
 ```
 
+### Utilizar nodemon:
+- Para utilizar la libreria nodemon se debe configurar el **package.json** en la propiedad scripts el punto de entrada de la app como **"dev": "nodemon src/main.js"**
+
+```json
+{
+  "name": "anti-social",
+  "version": "1.0.0",
+  "description": "UnaHur anti-social net - Trabajo Práctico",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/main.js", // --> Configurar propiedad
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+```
+
 ### Configuracion de las variables de entorno
 Desde el archivo ['.env'](./.env). pueden configurarse
 - El puerto de ejecucion
 - Antiguedad maxima de visualizacion de los comentarios
 - Motor de base de datos, nombre de bd, credenciales
 
-**Ej. de Configuracion para SQLite**
+**Ej. de Configuracion para SQLite** (configurada por defecto en .env)
 
 - Crear una carpeta que contenga el archivo de la BD local con extension .sqlite en la raiz del proyecto.
 
-**Instalar dependencia sqlite3** 
+**Instalar dependencia sqlite3** (instalacion por defecto configurada en package.json)
 ```bash
 npm i sqlite3
 ```
@@ -177,7 +177,7 @@ npm i sqlite3
 Instalar la version de MySQL Community server segun el SO disponible en
 https://dev.mysql.com/downloads/mysql/
 
-**Instalar dependencia mysql2**
+**Instalar dependencia mysql2** (instalacion por defecto configurada en package.json)
 ```bash
 npm i mysql2
 ```
@@ -195,11 +195,12 @@ npm i mysql2
    DB_STORAGE = ''
    DB_DIALECT = 'mysql'
 ```
-A modo de prueba en cotexto de desarrollo para crear las tablas en la BD antes de correr el proyecto descomentar el comando **await db.sequelize.sync({force:true});** en la linea 26 de main.js.
 
-**Advertencia**: al ejecutar **await db.sequelize.sync({force:true});** se pierden los datos grabados en la BD ya que dropea las tablas y las crea de nuevo.
+‼️ 🛑 **Atencion**: A modo de prueba en cotexto de desarrollo para crear las tablas en la BD antes de correr el proyecto descomentar el comando await db.sequelize.sync({force:true}); en la linea 26 de main.js. ‼️
 
-#### Correr el proyecto
+⚠️ 🛑 **Advertencia**: al ejecutar **await db.sequelize.sync({force:true});** se pierden los datos grabados en la BD ya que dropea las tablas y las crea de nuevo.
+
+**Correr el proyecto**
 
 ```bash
   npm run dev
