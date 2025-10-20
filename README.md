@@ -1,72 +1,180 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/F3f9PyrQ)
-# UnaHur - Red Anti-Social
+# Red Anti-Social
 
-Se solicita el modelado y desarrollo de un sistema backend para una red social llamada **“UnaHur Anti-Social Net”**, inspirada en plataformas populares que permiten a los usuarios realizar publicaciones y recibir comentarios sobre las mismas.
+## Universidad Nacional de Hurlingham
+## Trabajo Practico Nº 1 - Estrategias de Persistencia
+### Segundo Cuatrimestre - Año 2025
 
-![Imagen](./assets/ANTI-SOCIALNET.jpeg)
+### Docentes
+- Gerardo Gonzalez Tulian
 
-# Contexto del Proyecto
+### Grupo 9
+#### Integrantes:
 
-En una primera reunión con los sponsors del proyecto, se definieron los siguientes requerimientos para el desarrollo de un **MVP (Producto Mínimo Viable)**:
+- Asam Fernando
 
-- El sistema debe permitir que un usuario registrado realice una publicación (post), incluyendo **obligatoriamente una descripción**. De forma opcional, se podrán asociar **una o más imágenes** a dicha publicación.
+## Descripcion del Proyecto
 
-- Las publicaciones pueden recibir **comentarios** por parte de otros usuarios.
+Red Anti-Social es una aplicacion que implementa a modo de MVP el backend de una red social cuyas funcionalidades principales son:
+- Crear usuarios
+- Crear y asociar posts a usuarios
+- Crear y asociar imagenes, tags y comentarios a posts
+- Seguir a otros usuarios
+- Actualizacion, consulta y borrado de datos
 
-- Las publicaciones pueden estar asociadas a **etiquetas (tags)**. Una misma etiqueta puede estar vinculada a múltiples publicaciones.
+Entre los distintos tipos de consultas a la base de datos implementadas se encuentran:
+- Listado completo de registros de cada entidad.
+- Consultas de registros individuales de cada entidad por ID, Ej: consultar un usuario por id.
+- Consultas de registros de una entidad asociada a otra/s, Ej: todos los posts de un usuario.
+- Consulta de registros segun antiguedad, Ej: comentarios con antiguedad menor a 6 meses.
 
-- Es importante que los **comentarios más antiguos que X meses** (valor configurable mediante variables de entorno, por ejemplo, 6 meses) **no se muestren** en la visualización de los posteos.
+La aplicacion permite configurar las variables de entorno necesarias para su ejecucion como:
+- El puerto de ejecucion donde se reciben las peticiones
+- El motor de base de datos que se desea implementar
+- Visibilidad de comentarios por antiguedad
 
-####
+El proyecto cuenta con documentacion completa de cada endpoint en formato **YAML** que puede consultarse en http://localhost:3006/api-docs.
+El puerto de ejecucion por defecto es el 3006 configurado tanto en la [📄 documentación YAML](./src/docs/Documentacion_API_Red_Anti-Social.yaml) como
+en la [📄 configuracion de variables de entorno ](./.env).
 
-# Entidades y Reglas de Negocio
 
-Los sponsors definieron los siguientes nombres y descripciones para las entidades:
+## Caracteristicas
 
-- **User**: Representa a los usuarios registrados en el sistema. El campo `nickName` debe ser **único** y funcionará como identificador principal del usuario.
+### Diagrama Entidad-Relacion
 
-- **Post**: Publicación realizada por un usuario en una fecha determinada que contiene el texto que desea publicar. Puede tener **cero o más imágenes** asociadas. Debe contemplarse la posibilidad de **agregar o eliminar imágenes** posteriormente.
+![Imagen](./src/docs/Diagrama_Der.jpg)
 
-- **Post_Images**: Entidad que registra las imágenes asociadas a los posts. Para el MVP, solo se requiere almacenar la **URL de la imagen alojada**.
+## Entidades
 
-- **Comment**: Comentario que un usuario puede realizar sobre una publicación. Incluye la fecha en la que fue realizado y una indicación de si está **visible o no**, dependiendo de la configuración (X meses).
+**Users**:
+- Registra 
+**Posts**:
 
-- **Tag**: Etiqueta que puede ser asignada a un post. Una etiqueta puede estar asociada a **muchos posts**, y un post puede tener **múltiples etiquetas**.
+**Post_Images**:
 
-# Requerimientos Técnicos
+**Tags**:
 
-1. **Modelado de Datos**
+**Comments**:
 
-   - Diseñar el **Diagrama Entidad-Relación (DER)** considerando relaciones de tipo uno a muchos y muchos a muchos.
+**Follows**:
 
-   - Además de las claves primarias, identificar en qué entidades se requiere una **clave única** (`unique key`), y definirla explícitamente.
+Descripción del proyecto	Qué hace y para qué sirve	✔️
+✅ Características / entidades	Detalle de Users, Posts, etc.	✔️
+✅ Tecnologías y dependencias	Stack del proyecto	✔️
+✅ Cómo correr el proyecto	Pasos con comandos	✔️
+✅ Documentación Swagger + YAML	Enlaces y explicación	✔️
+✅ Endpoints	Tabla de rutas	✔️
+✅ Estructura del proyecto	Árbol de carpetas	✔️
+🟡 Variables de entorno	Qué define y cómo	🔜
+🟡 Base de datos / Migraciones	Cómo se manejan	🔜
+🟡 Ejemplo de uso de API	Request/response	🔜
+🟡 Futuras mejoras	Plan a futuro	🔜
+🟢 Licencia y autor	Información de contacto
 
-2. **Desarrollo del Backend**
 
-   - Crear los **endpoints CRUD** necesarios para cada entidad.
+## Tecnologias
 
-   - Implementar las rutas necesarias para gestionar las relaciones entre entidades (por ejemplo: asociar imágenes a un post, etiquetas a una publicación, etc.).
+**Cliente:** React, Bootsrap, Vite
 
-   - Desarrollar las validaciones necesarias para asegurar la integridad de los datos (schemas, validaciones de integridad referencial).
+**Servidor:** Node
 
-   - Desarrollar las funciones controladoras con una única responsabiliad evitando realizar comprobaciones innecesarias en esta parte del código.
+## 📦 Dependencias
 
-3. **Configuración y Portabilidad**
+#### ⚙️ Dependencias de produccion que utiliza el proyecto
 
-   - El sistema debe poder cambiar de **base de datos** de forma transparente, utilizando configuración e instalación de dependencias adecuadas.
+```json
+  "dependencies": {
+    "bootstrap": "^5.3.8",
+    "formik": "^2.4.6",
+    "react": "^19.1.1",
+    "react-bootstrap": "^2.10.10",
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.9.1",
+    "yup": "^1.7.1"
+  }
+```
+#### 🧰 Dependencias de desarrollo que utiliza el proyecto
 
-   - El sistema debe permitir configurar el **puerto de ejecución y variables de entorno** fácilmente.
+```json
+  "devDependencies": {
+    "@eslint/js": "^9.35.0",
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.2",
+    "eslint": "^9.35.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.4.0",
+    "vite": "^7.1.6"
+  }
+```
+    
+## Correr el Proyecto
 
-4. **Documentación**
+#### Clonar el proyecto
 
-   - Generar la documentación de la API utilizando **Swagger (formato YAML)**, incluyendo todos los endpoints definidos.
+```bash
+  git clone https://github.com/facundoArias217/tpInterfacesDeUsuario
+```
 
-5. **Colecciones de Prueba**
+#### Ir a la carpeta del proyecto
 
-   - Entregar las colecciones necesarias para realizar pruebas (por ejemplo, colecciones de Postman o archivos JSON de ejemplo).
+```bash
+  cd tpInterfacesDeUsuario
+```
 
-# Bonus
+#### Abrir con Vs Code
 
-- Hace el upload de las imganes que se asocian a un POST que lo guarden en una carpeta de imagenes dentro del servidor web.
-- ¿Cómo modelarías que un usuario pueda "seguir" a otros usuarios, y a su vez ser seguido por muchos? Followers
-- Con la información de los post no varia muy seguido que estrategias podrian utilizar la que la información no sea constantemente consultada desde la base de datos.
+```bash
+  code .
+```
+
+#### Instalar dependencias
+
+```bash
+  npm install
+```
+
+#### Correr el proyecto
+
+```bash
+  npm run dev
+```
+#### Seguir el enlace que aparece en la terminal para abrir el sitio en el navegador
+
+![Imagen](./src/assets/LinkPagina.jpg)
+
+## Estructura del Proyecto
+
+```
+📁 src
+├── 📁 assets
+├── 📁 components
+│   ├── 📁 Boton
+│   │   └── Boton.jsx
+│   ├── 📁 FormInput
+│   │   └── FormInput.jsx
+│   ├── 📁 Footer
+│   │   └── Footer.jsx
+│   ├── 📁 NavBar
+│   │   └── NavBar.jsx
+│   ├── 📁 Producto
+│   │   ├── Producto.jsx
+│   │   └── Producto.module.css
+│   ├── 📁 ProductoPedido
+│   │   └── ProductoPedido.jsx
+│   └── index.js
+├── 📁 estilos
+│   └── estilos.css
+├── 📁 pages
+│   ├── Carrito.jsx
+│   ├── Carta.jsx
+│   ├── ContactoYReserva.jsx
+│   ├── Inicio.jsx
+│   └── index.js
+├── 📁 platos
+│   └── platos.json
+├── 📁 schemas
+│   └── Form.schema.jsx
+├── App.jsx
+└── main.jsx
+```
