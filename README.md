@@ -44,7 +44,7 @@ en la [📄 configuracion de variables de entorno ](./.env).
 
 ### Diagrama Entidad-Relacion
 
-![Imagen](./src/docs/Diagrama_Der.jpg)
+![Imagen](./src/docs/Diagrama_DER.jpg)
 
 ## Entidades
 Cada entidad tiene el fin de registrar:
