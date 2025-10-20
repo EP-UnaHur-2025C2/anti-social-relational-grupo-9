@@ -1,5 +1,5 @@
 const {Post, Post_Image, Comment, Tag} = require('../db/models');
-const {tagService} = require('../service functions');
+const {tagService} = require('../service-functions');
 
 const getFullPostsWithComments = async (req, res) => {
     const foundPosts = await Post.findAll({where:{}, include:[{model:Post_Image, as:'images'}, {model:Tag, as:'tags', through:{attributes:[]}}, {model:Comment, as:'comments'}]});

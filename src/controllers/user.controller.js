@@ -1,5 +1,5 @@
 const {User, Post, Post_Image, Tag} = require('../db/models');
-const {tagService} = require('../service functions');
+const {tagService} = require('../service-functions');
 
 const getUserWithPosts = async (req, res) => {
     const id = req.params.id;
